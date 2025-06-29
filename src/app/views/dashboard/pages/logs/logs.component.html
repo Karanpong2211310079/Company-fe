@@ -1,0 +1,36 @@
+<div class="bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold text-gray-700 mb-4">System Logs</h2>
+  
+    <div class="overflow-x-auto">
+      <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Timestamp</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">User</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Action</th>
+            <th class="text-left px-6 py-3 text-xs font-medium text-gray-500 uppercase">Status</th>
+          </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-100">
+          <tr *ngFor="let log of logs">
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ log.date }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">{{ log.user }}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{{ log.action }}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span
+                class="px-3 py-1 text-xs font-semibold rounded-full"
+                [ngClass]="{
+                  'bg-green-100 text-green-800': log.status === 'Success',
+                  'bg-yellow-100 text-yellow-800': log.status === 'Warning',
+                  'bg-red-100 text-red-800': log.status === 'Failed'
+                }"
+              >
+                {{ log.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
