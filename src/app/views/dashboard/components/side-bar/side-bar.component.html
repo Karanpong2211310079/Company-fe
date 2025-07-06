@@ -1,38 +1,17 @@
-<aside class="w-64 h-screen bg-gray-800 text-white fixed top-0 left-0 pt-16 hidden lg:block shadow-lg z-40">
-    <nav class="flex flex-col px-4 space-y-1">
-      
-      <a
-        routerLink="overviews"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center gap-2 py-2 px-4 rounded transition hover:bg-gray-700"
-      >
-        🏠 <span class="font-medium">Overview</span>
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
+  <div class="logo-container">
+    <button class="logo" (click)="togglecollapsed()">A</button>
+    <div class="logo-text" *ngIf="collapsed">SuperAdmin</div>
+    <button class="btn-close" *ngIf="collapsed">
+      <i class="fas fa-times close-icon " (click)="closecollapsed()"></i>
+    </button>
+  </div>
+  <ul class="sidenav-nav">
+    <li class="sidenav-nav-item" *ngFor = "let data of navData">
+      <a href="" class="sidenav-nav-link" [routerLink]="[data.RouterLink]">
+        <li class="sidenav-nav-icon" [class]="data.icon"></li>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{data.Label}}</span>
       </a>
-  
-      <a
-        routerLink="employees"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center gap-2 py-2 px-4 rounded transition hover:bg-gray-700"
-      >
-        👤 <span class="font-medium">Employees</span>
-      </a>
-  
-      <a
-        routerLink="logs"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center gap-2 py-2 px-4 rounded transition hover:bg-gray-700"
-      >
-        📊 <span class="font-medium">Logs</span>
-      </a>
-  
-      <a
-        routerLink="settings"
-        routerLinkActive="bg-gray-700"
-        class="flex items-center gap-2 py-2 px-4 rounded transition hover:bg-gray-700"
-      >
-        ⚙️ <span class="font-medium">Settings</span>
-      </a>
-      
-    </nav>
-  </aside>
-  
+    </li>
+  </ul>
+</div>
