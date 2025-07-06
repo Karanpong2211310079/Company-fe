@@ -1,17 +1,28 @@
 <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed' : '' ">
+  <!-- Top Section -->
   <div class="logo-container">
     <button class="logo" (click)="togglecollapsed()">A</button>
     <div class="logo-text" *ngIf="collapsed">SuperAdmin</div>
     <button class="btn-close" *ngIf="collapsed">
-      <i class="fas fa-times close-icon " (click)="closecollapsed()"></i>
+      <i class="fas fa-times close-icon" (click)="closecollapsed()"></i>
     </button>
   </div>
+
+  <!-- Navigation Section -->
   <ul class="sidenav-nav">
-    <li class="sidenav-nav-item" *ngFor = "let data of navData">
-      <a href="" class="sidenav-nav-link" [routerLink]="[data.RouterLink]">
+    <li class="sidenav-nav-item" *ngFor="let data of navData">
+      <a class="sidenav-nav-link" [routerLink]="[data.RouterLink]">
         <li class="sidenav-nav-icon" [class]="data.icon"></li>
-        <span class="sidenav-link-text" *ngIf="collapsed">{{data.Label}}</span>
+        <span class="sidenav-link-text" *ngIf="collapsed">{{ data.Label }}</span>
       </a>
     </li>
   </ul>
+
+  <!-- Logout Button -->
+  <div class="sidenav-logout" *ngIf="collapsed">
+    <button (click)="logout()" class="logout-button">
+      <i class="fas fa-sign-out-alt"></i>
+      <span class="logout-text">Logout</span>
+    </button>
+  </div>
 </div>

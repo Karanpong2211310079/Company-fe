@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Logs } from '../../../../core/models/logs';
+import { LogsService } from '../../../../core/service/logs.service';
 @Component({
   selector: 'app-logs',
   imports: [CommonModule],
@@ -7,30 +9,32 @@ import { CommonModule } from '@angular/common';
   styleUrl: './logs.component.scss'
 })
 export class LogsComponent {
-  logs = [
-    {
-      date: '2025-06-28 10:23',
-      user: 'John Doe',
-      action: 'Logged in',
-      status: 'Success'
-    },
-    {
-      date: '2025-06-28 10:45',
-      user: 'Jane Smith',
-      action: 'Accessed employee records',
-      status: 'Success'
-    },
-    {
-      date: '2025-06-28 11:00',
-      user: 'System',
-      action: 'Server restart detected',
-      status: 'Warning'
-    },
-    {
-      date: '2025-06-28 11:15',
-      user: 'Unknown',
-      action: 'Unauthorized access attempt',
-      status: 'Failed'
-    }
-  ];
+  logs: Logs[] = [];
+
+  constructor(private logsService: LogsService) {}
+
+  ngOnInit(): void {
+    this.showLogs();
+  }
+
+  showLogs(): void {
+    this.logsService.GetLogs().subscribe({
+      next: (data) => {
+        console.log(data)
+        this.logs = data; // ✅ รับจาก API
+      },
+      error: (err) => {
+        console.error('Error loading logs:', err);
+      }
+    });
+  }
+
+  mapStatus(action: string | null): string {
+  if (!action) return 'Unknown';
+  if (action.includes('FAILED') || action.includes('UNAUTHORIZED')) return 'Failed';
+  if (action.includes('WARNING')) return 'Warning';
+  return 'Success';
 }
+
+}
+

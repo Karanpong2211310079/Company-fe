@@ -50,6 +50,54 @@
         }
     }
 }
+.sidenav {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; // ✅ ทำให้ปุ่ม logout อยู่ล่างสุด
+  background: #263238;
+  transition: all 0.5s ease;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  width: 5rem;
+  height: 100vh;
+  box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+
+  .sidenav-logout {
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-start;
+
+    .logout-button {
+      width: 100%;
+      background: #ef5350;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.3s ease;
+
+      .fa-sign-out-alt {
+        margin-right: 0.5rem;
+      }
+
+      &:hover {
+        background: #e53935;
+      }
+    }
+
+    .logout-text {
+      display: inline-block;
+    }
+  }
+}
+
 
 .sidenav-collapsed{
     width: 18.5625rem;
