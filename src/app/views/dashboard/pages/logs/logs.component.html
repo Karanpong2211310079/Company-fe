@@ -31,11 +31,11 @@
             <span
               class="px-3 py-1 text-xs font-semibold rounded-full"
               [ngClass]="{
-                'bg-green-100 text-green-800': log.action?.startsWith('CREATE') || log.action === 'LOGIN',
-                'bg-yellow-100 text-yellow-800': log.action?.includes('WARNING'),
-                'bg-red-100 text-red-800': log.action?.includes('FAILED') || log.action?.includes('UNAUTHORIZED')
-              }"
-            >
+                'bg-green-100 text-green-800': log.action === 'CREATE_EMPLOYEE',
+                'bg-yellow-100 text-yellow-800': log.action === 'UPDATE_EMPLOYEE',
+                'bg-red-100 text-red-800': log.action === 'DELETE_EMPLOYEE' || log.action?.includes('FAILED')
+     }">
+            
               {{ mapStatus(log.action) }}
             </span>
           </td>

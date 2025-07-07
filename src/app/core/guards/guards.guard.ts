@@ -13,7 +13,7 @@ export class GuardsGuard implements CanActivate {
   canActivate(): boolean {
     const role = this.authService.GetRole(); // ✅ เรียก method ให้ถูก
 
-    if (role === 'admin') { 
+    if (role === 'admin' || role === 'user') { 
       return true; // ✅ อนุญาตให้เข้า
     } else {
       this.router.navigate(['/not-authorized']); // ✅ Navigate ก่อน

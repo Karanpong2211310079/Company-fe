@@ -5,6 +5,12 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class DeleteService {
+  private deleteUrl = 'http://localhost:8000/user/delete/'
 
-  constructor() { }
+  constructor(private http:HttpClient) {}
+
+ DeleteEmployee(id: number): Observable<any> {
+  return this.http.post(this.deleteUrl, { id });
+}
+
 }

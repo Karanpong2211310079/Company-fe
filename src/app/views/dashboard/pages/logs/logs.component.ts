@@ -10,6 +10,7 @@ import { LogsService } from '../../../../core/service/logs.service';
 })
 export class LogsComponent {
   logs: Logs[] = [];
+  log_type:string[] = [];
 
   constructor(private logsService: LogsService) {}
 
@@ -20,8 +21,10 @@ export class LogsComponent {
   showLogs(): void {
     this.logsService.GetLogs().subscribe({
       next: (data) => {
-        console.log(data)
+        this.log_type = [...new Set(data.map(log => log.action))];
+        console.log(this.log_type)
         this.logs = data; // ✅ รับจาก API
+        console.log(data)
       },
       error: (err) => {
         console.error('Error loading logs:', err);
