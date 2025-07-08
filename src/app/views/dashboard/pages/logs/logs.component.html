@@ -3,6 +3,7 @@
     System Logs
   </h2>
 
+  <!-- Table Container -->
   <div class="overflow-x-auto rounded-md border border-gray-200">
     <table class="min-w-full divide-y divide-gray-200">
       <thead class="bg-indigo-50">
@@ -34,16 +35,38 @@
                 'bg-green-100 text-green-800': log.action === 'CREATE_EMPLOYEE',
                 'bg-yellow-100 text-yellow-800': log.action === 'UPDATE_EMPLOYEE',
                 'bg-red-100 text-red-800': log.action === 'DELETE_EMPLOYEE' || log.action?.includes('FAILED')
-     }">
-            
+              }"
+            >
               {{ mapStatus(log.action) }}
             </span>
           </td>
         </tr>
         <tr *ngIf="logs.length === 0">
-          <td colspan="4" class="text-center py-6 text-gray-500 italic">No logs available.</td>
+          <td colspan="4" class="text-center py-6 text-gray-500 italic">
+            No logs available.
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
+
+  <!-- Pagination -->
+  <!-- Pagination -->
+<div class="flex justify-center gap-2 mt-4 flex-wrap">
+  <button
+    *ngFor="let page of [].constructor(totalPages); let i = index"
+    (click)="goToPage(i + 1)"
+    class="px-3 py-1 rounded-lg transition"
+    [ngClass]="{
+      'bg-gray-700 text-white': currentPage === i + 1,
+      'bg-white text-gray-700 border border-gray-300 hover:bg-gray-100': currentPage !== i + 1
+    }"
+  >
+    {{ i + 1 }}
+  </button>
+</div>
+
+<!-- Page info -->
+<div class="text-center text-gray-500 mt-4">
+  Page {{ currentPage }} of {{ totalPages }}
 </div>

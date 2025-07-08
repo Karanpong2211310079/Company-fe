@@ -10,8 +10,8 @@
 
   <!-- Navigation Section -->
   <ul class="sidenav-nav">
-    <li class="sidenav-nav-item" *ngFor="let data of navData">
-      <a class="sidenav-nav-link" [routerLink]="[data.RouterLink]">
+    <li  class="sidenav-nav-item" *ngFor="let data of navData">
+      <a  class="sidenav-nav-link" [routerLink]="[data.RouterLink]">
         <li class="sidenav-nav-icon" [class]="data.icon"></li>
         <span class="sidenav-link-text" *ngIf="collapsed">{{ data.Label }}</span>
       </a>

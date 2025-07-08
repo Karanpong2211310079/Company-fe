@@ -16,7 +16,7 @@ export class AuthService {
     private http: HttpClient
   ) {}
 
-  LoginUser(username: string, password: string): Observable<User> {
+  public LoginUser(username: string, password: string): Observable<User> {
     return this.http.post<User>(`${this.baseUrl}`, { username, password }).pipe(
       tap(user => {
         this.cookieService.set('token', user.access || '', {
@@ -29,17 +29,17 @@ export class AuthService {
     );
   }
 
-  Logout(){
+  public Logout():void{
     this.cookieService.delete('token','/');
     this.cookieService.delete('role','/');
   }
-  GetToken(){
+  public GetToken():string | null {
     return this.cookieService.get('token') || null;
   }
-  GetRole(){
+  public GetRole():string | null {
     return this.cookieService.get('role') || null;
   }
-  isAuthenticate():boolean{
+  public isAuthenticate():boolean{
     return !!this.GetToken();
   }
 }

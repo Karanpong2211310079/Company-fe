@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { VerticalComponent } from './components/vertical/vertical.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [],
+  imports: [RouterModule,VerticalComponent],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss'
 })

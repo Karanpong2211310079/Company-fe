@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EmployeesService } from '../../../../core/service/employees.service';
+import { StatsModel } from '../../../../core/models/data.interface';
 
 @Component({
   selector: 'app-overviews',
@@ -11,8 +12,9 @@ import { EmployeesService } from '../../../../core/service/employees.service';
 })
 export class OverviewsComponent {
   AmountEmp: number = 0;
+  
 
-  stats = [
+  public stats:StatsModel[] = [
     { title: 'Employees', value: 0, icon: '👥', color: 'bg-blue-100 text-blue-800' },
     { title: 'Reports', value: 24, icon: '📄', color: 'bg-green-100 text-green-800' },
     { title: 'Errors', value: 3, icon: '⚠️', color: 'bg-red-100 text-red-800' },
