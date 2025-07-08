@@ -48,14 +48,21 @@
 </div>
 
 <div>
-  <input type="number" [(ngModel)]="pageSize" class="w-24 px-4 py-2 border border-gray-300 rounded-lg mb-4" placeholder="Page Size" />
+  <input
+    type="number"
+    [(ngModel)]="pageSize"
+    class="w-24 px-4 py-2 border border-gray-300 rounded-lg mb-4"
+    placeholder="Page Size"
+    min="1"
+  />
   <button
-    
+    (click)="onSetPageSize()"
     class="px-4 py-2 bg-indigo-600 text-white rounded-lg shadow mb-4 hover:bg-indigo-700 transition"
   >
     Set Page Size
   </button>
 </div>
+
   <!-- Employee Table -->
   <div class="overflow-x-auto">
     <table

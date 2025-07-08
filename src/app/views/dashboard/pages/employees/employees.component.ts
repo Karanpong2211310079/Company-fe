@@ -84,6 +84,20 @@ export class EmployeesComponent implements OnInit, OnDestroy {
       }
     });
   }
+  onSetPageSize(): void {
+  if (!this.pageSize || this.pageSize < 1) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Invalid Page Size',
+      text: 'Please enter a valid number greater than 0.',
+    });
+    return;
+  }
+
+  this.currentPage = 1;  // รีเซ็ตกลับหน้าแรก
+  this.loadEmployees(`http://localhost:8000/api/employees/?page=1&page_size=${this.pageSize}`);
+}
+
 
   ngOnDestroy(): void {
     this.unsubscribe.next();
@@ -104,18 +118,36 @@ export class EmployeesComponent implements OnInit, OnDestroy {
       this.searchTermChanged.next({ keyword: this.searchTerm, page: this.currentPage });
     } else if (this.minSalary || this.maxSalary) {
       // ถ้ามี filter
-      this.applyFilter(`http://localhost:8000/api/employees/filter/?page=${page}`);
+      const baseUrl = `http://localhost:8000/api/employees/filter/`;
+      const url = new URL(baseUrl);
+      url.searchParams.set('page', page.toString());
+      url.searchParams.set('page_size', this.pageSize.toString());
+      this.applyFilter(url.toString());
     } else {
-      this.loadEmployees(`http://localhost:8000/api/employees/?page=${page}`);
+      const baseUrl = `http://localhost:8000/api/employees/`;
+      const url = new URL(baseUrl);
+      url.searchParams.set('page', page.toString());
+      url.searchParams.set('page_size', this.pageSize.toString());
+      this.loadEmployees(url.toString());
     }
   }
 
   loadEmployees(url?: string): void {
-    const match = url?.match(/page=(\d+)/);
-    if (match) this.currentPage = +match[1];
-    else this.currentPage = 1;
+    let finalUrl: string;
+    if (url) {
+      const urlObj = new URL(url);
+      urlObj.searchParams.set('page_size', this.pageSize.toString());
+      finalUrl = urlObj.toString();
 
-    this.employeeService.getEmployees(url).subscribe({
+      const match = finalUrl.match(/page=(\d+)/);
+      if (match) this.currentPage = +match[1];
+      else this.currentPage = 1;
+    } else {
+      finalUrl = `http://localhost:8000/api/employees/?page=1&page_size=${this.pageSize}`;
+      this.currentPage = 1;
+    }
+
+    this.employeeService.getEmployees(finalUrl).subscribe({
       next: (data) => {
         this.employees = data.results;
         this.AmountEmp = data.count;
@@ -129,11 +161,21 @@ export class EmployeesComponent implements OnInit, OnDestroy {
   }
 
   applyFilter(url?: string): void {
-    const match = url?.match(/page=(\d+)/);
-    if (match) this.currentPage = +match[1];
-    else this.currentPage = 1;
+    let finalUrl: string;
+    if (url) {
+      const urlObj = new URL(url);
+      urlObj.searchParams.set('page_size', this.pageSize.toString());
+      finalUrl = urlObj.toString();
 
-    this.filterService.filterEmployees(this.minSalary, this.maxSalary, url).pipe(
+      const match = finalUrl.match(/page=(\d+)/);
+      if (match) this.currentPage = +match[1];
+      else this.currentPage = 1;
+    } else {
+      finalUrl = `http://localhost:8000/api/employees/filter/?page=1&page_size=${this.pageSize}`;
+      this.currentPage = 1;
+    }
+
+    this.filterService.filterEmployees(this.minSalary, this.maxSalary, finalUrl).pipe(
       takeUntil(this.unsubscribe)
     ).subscribe({
       next: (data) => {
@@ -160,12 +202,26 @@ export class EmployeesComponent implements OnInit, OnDestroy {
 
   next() {
     if (!this.nextPage) return;
-    this.minSalary || this.maxSalary ? this.applyFilter(this.nextPage) : this.loadEmployees(this.nextPage);
+
+    const urlObj = new URL(this.nextPage);
+    urlObj.searchParams.set('page_size', this.pageSize.toString());
+    const urlWithPageSize = urlObj.toString();
+
+    this.minSalary || this.maxSalary
+      ? this.applyFilter(urlWithPageSize)
+      : this.loadEmployees(urlWithPageSize);
   }
 
   prev() {
     if (!this.previousPage) return;
-    this.minSalary || this.maxSalary ? this.applyFilter(this.previousPage) : this.loadEmployees(this.previousPage);
+
+    const urlObj = new URL(this.previousPage);
+    urlObj.searchParams.set('page_size', this.pageSize.toString());
+    const urlWithPageSize = urlObj.toString();
+
+    this.minSalary || this.maxSalary
+      ? this.applyFilter(urlWithPageSize)
+      : this.loadEmployees(urlWithPageSize);
   }
 
   editEmployee(emp: Employees): void {
