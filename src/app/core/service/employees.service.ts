@@ -7,12 +7,12 @@ import { PaginatedEmployees } from '../models/employees';
   providedIn: 'root'
 })
 export class EmployeesService {
-  private baseUrl = 'http://localhost:8000/api/employees';
+  private baseUrl = 'http://localhost:8000/api/employees/';
 
   constructor(private http: HttpClient) {}
 
-  getEmployees(url: string = this.baseUrl): Observable<PaginatedEmployees> {
+  getEmployees(url: string): Observable<PaginatedEmployees> {
     return this.http.get<PaginatedEmployees>(url);
   }
-  
 }
+

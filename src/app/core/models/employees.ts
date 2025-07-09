@@ -1,16 +1,16 @@
 export interface Employees {
-    id: number;
-    full_name: string;
-    first_name: string;
-    last_name: string;
-    phone_number: string;
-    start_date: string;
-    salary: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  full_name?: string;
+  phone_number: string;
+  start_date: string;
+  salary: number;
 }
 
 export interface PaginatedEmployees {
-    count: number;
-    next: string | null;
-    previous: string | null;
-    results: Employees[];
+  total: number;
+  offset?: number;
+  limit?: number;
+  results: Employees[];
 }

@@ -21,5 +21,12 @@ export class FilterService {
   };
   return this.http.post<PaginatedEmployees>(url, body);
 }
+filterEmployeesDate(url:string = this.filterEmployeesUrl, startDate: string): Observable<PaginatedEmployees> {
+  const body = {
+    start_date: startDate
+  };
+  return this.http.post<PaginatedEmployees>(url, body);
+
+  }
 
 }
