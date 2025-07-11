@@ -17,7 +17,7 @@
     <!-- Search -->
     <div class="col-span-1 sm:col-span-2">
       <label class="block text-sm font-medium mb-1" for="searchInput">Search</label>
-      <input id="searchInput" type="text" [(ngModel)]="searchTerm" name="search" (input)="onSearch(searchTerm)" placeholder="Search by name or phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg" />
+      <input id="searchInput" type="text" [(ngModel)]="searchTerm" name="search"  placeholder="Search by name or phone" class="w-full px-4 py-2 border border-gray-300 rounded-lg" />
     </div>
 
     <!-- Salary Min -->
@@ -46,7 +46,7 @@
 
     <!-- Submit Button -->
     <div class="sm:col-span-5 text-right mt-2">
-      <button (click)="applyAllFilters()"  type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
+      <button (click)="applyAllFilters(); goToPage(0)"   type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
         Apply Filters
       </button>
     </div>
@@ -94,8 +94,5 @@
     >
       {{ page + 1 }}
     </button>
-  </div>
-  <div class="text-center text-gray-500 mt-4">
-    Page {{ currentPage }} of {{ totalPages.length }}
   </div>
 </div>

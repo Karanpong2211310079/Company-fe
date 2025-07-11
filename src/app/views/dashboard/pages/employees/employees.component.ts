@@ -21,25 +21,22 @@ import { takeUntil } from 'rxjs/operators';
   styleUrls: ['./employees.component.scss']
 })
 export class EmployeesComponent implements OnInit, OnDestroy {
-  employees: Employees[] = [];
-  searchTerm: string = '';
-  minSalary: number = 0;
-  maxSalary: number = 0;
-  filterStartDate: string | null = null;
-  currentPage: number = 0;
-  pageSize: number = 10;
-  AmountEmp: number = 0;
-  role: string = '';
+  public employees: Employees[] = [];
+  public searchTerm: string = '';
+  public minSalary: number = 0;
+  public maxSalary: number = 0;
+  public filterStartDate: string | null = null;
+  public currentPage: number = 0;
+  public pageSize: number = 10;
+  public AmountEmp: number = 0;
+  public role: string = '';
+  public totalPages: number[] = [];
+
 
   private unsubscribe = new Subject<void>();
   private latestParams: { [key: string]: string | number } = {};
 
- get totalPages(): number[] {
-  return Array.from(
-    { length: Math.ceil(this.AmountEmp / this.pageSize) },
-    (_, i) => i // เริ่มที่ 0
-  );
-}
+  
 
 
   constructor(
@@ -48,7 +45,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     private ModifyService: ModifyService,
     private employeeService: EmployeesService,
     private authService: AuthService,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.role = this.authService.GetRole() ?? '';
@@ -61,7 +58,7 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     this.unsubscribe.complete();
   }
 
-  loadEmployees(params: { [key: string]: string | number } = {}): void {
+  private loadEmployees(params: { [key: string]: string | number } = {}): void {
     this.latestParams = { ...params };
 
     const query = new URLSearchParams();
@@ -77,15 +74,19 @@ export class EmployeesComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.employees = data.results;
         this.AmountEmp = data.total;
+        const totalPageCount = Math.ceil(this.AmountEmp / this.pageSize);
+        this.totalPages = Array.from({ length: totalPageCount }, (_, i) => i);
+        console.log('Pages:', this.currentPage); // Debugging line
       },
       error: (err) => {
         console.error('Error loading employees:', err);
       }
     });
-    
+
   }
 
-  applyAllFilters(): void {
+  public applyAllFilters(): void {
+    
     const offset = this.currentPage * this.pageSize;
     const limit = this.pageSize;
 
@@ -100,29 +101,24 @@ export class EmployeesComponent implements OnInit, OnDestroy {
     if (this.filterStartDate) params.start_date = this.filterStartDate;
 
     this.loadEmployees(params);
-    
-    
   }
 
-  reloadSamePage(): void {
+  private reloadSamePage(): void {
     this.loadEmployees(this.latestParams);
   }
+  
 
-  onSearch(keyword: string): void {
-    this.searchTerm = keyword.trim();
+
+
+
+  public goToPage(page: number): void {
+    if (page < 0 || page >= Math.ceil(this.AmountEmp / this.pageSize)) return; // ✅ อนุญาต page 0
+    this.currentPage = page;
     this.applyAllFilters();
   }
 
 
-
-goToPage(page: number): void {
-  if (page < 0 || page >= Math.ceil(this.AmountEmp / this.pageSize)) return; // ✅ อนุญาต page 0
-  this.currentPage = page;
-  this.applyAllFilters();
-}
-  
-
-  deleteEmployee(emp: Employees): void {
+  public deleteEmployee(emp: Employees): void {
     Swal.fire({
       title: 'คุณแน่ใจหรือไม่?',
       text: `คุณต้องการลบ ${emp.full_name} หรือไม่?`,
@@ -147,7 +143,7 @@ goToPage(page: number): void {
     });
   }
 
-  createUser(): void {
+  public createUser(): void {
     Swal.fire({
       title: '➕ เพิ่มพนักงานใหม่',
       html: `
@@ -207,7 +203,7 @@ goToPage(page: number): void {
     });
   }
 
-  editEmployee(emp: Employees): void {
+  public editEmployee(emp: Employees): void {
     Swal.fire({
       title: `✏️ แก้ไขข้อมูลพนักงาน`,
       html: `
